@@ -15,7 +15,8 @@ if ! zgenom saved; then
 	zgenom oh-my-zsh plugins/sudo
 	zgenom oh-my-zsh plugins/command-not-found
 	zgenom oh-my-zsh plugins/colored-man-pages
-
+	
+	zgenom load jeffreytse/zsh-vi-mode
 	zgenom load zsh-users/zsh-autosuggestions
 	zgenom load zsh-users/zsh-syntax-highlighting
 	zgenom load spaceship-prompt/spaceship-prompt spaceship
@@ -23,4 +24,12 @@ if ! zgenom saved; then
 	zgenom save
 fi
 
-#SPACESHIP_PROMPT_ADD_NEWLINE = false
+# Kitty terminal alias
+alias icat="kitty +kitten icat"
+
+# Spaceship prompt
+SPACESHIP_CHAR_SYMBOL=' '
+SPACESHIP_VI_MODE_SHOW=true;
+
+autoload -U promptinit; promptinit
+

@@ -89,7 +89,7 @@ keys = [
         desc="Spawn a command using a prompt widget"),
 ]
 
-groups = [Group("1", label=""), Group("2", label=""), Group("3",label = "")]
+groups = [Group("1", label=""), Group("2", label=""), Group("3",label = ""), Group("4",label = "")]
 
 for i in groups:
     keys.extend([

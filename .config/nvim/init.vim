@@ -20,6 +20,9 @@ call plug#end()
 
 filetype plugin on
 
+"---Mouse---
+set mouse=a
+
 "---Line numbering---
 set number
 set relativenumber
