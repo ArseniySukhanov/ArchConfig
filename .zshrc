@@ -1,0 +1,1 @@
+/home/senator/.zshrc

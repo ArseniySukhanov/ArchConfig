@@ -1,0 +1,23 @@
+#-----Whitelist for .config-----
+.config/
+.config/*
+# Terminal
+!.config/kitty/*
+# Terminal Utils
+!.config/nvim/*
+!.config/vifm/*
+!.config/neofetch/*
+!.config/htop/*
+# Window manager
+!.config/qtile/*
+!.config/picom/*
+# GTK
+!.config/gtk-2.0/*
+!.config/gtk-3.0/*
+# Fonts
+!.config/fontconfig/*
+# Audio
+!.config/pavucontrol.ini
+# User Directories
+!.config/user-dirs.dirs
+!.config/user-dirs.locale
