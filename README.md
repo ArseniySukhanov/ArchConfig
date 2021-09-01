@@ -5,7 +5,7 @@ My arch linux configuration files
 ![screenshot1](https://github.com/ArseniySukhanov/ArchConfig/blob/master/screenshots/screenshot_1.png)
 ![screenshot2](https://github.com/ArseniySukhanov/ArchConfig/blob/master/screenshots/screenshot_2.png)
 
-## Zsh Congiguration
+## Zsh Configuration
 Clone the zgenom (continuation of zgen):
 
 	git clone https://github.com/jandamm/zgenom.git "${HOME/.zgenom}"
