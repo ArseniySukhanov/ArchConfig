@@ -26,6 +26,8 @@
 
 import os
 import subprocess
+from time import time
+from pathlib import Path
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget, hook
@@ -38,8 +40,45 @@ def autostart():
     home = os.path.expanduser('~')
     subprocess.Popen([home + '/.config/qtile/autostart.sh'])
 
+BROWSER = 'firefox'
+
+
 mod = "mod4"
 terminal = guess_terminal()
+
+# Screenshot
+def screenshot(save=True, copy=False):
+    def f(qtile):
+        path = Path.home() / 'Pictures/Screenshots'
+        path /= f'screenshot_{str(int(time() * 100))}.png'
+        shot = subprocess.run(['maim'], stdout=subprocess.PIPE)
+
+        if save:
+            with open(path, 'wb') as sc:
+                sc.write(shot.stdout)
+
+        if copy:
+            subprocess.run(['xclip', '-selection', 'clipboard', '-t', 'image/png'], input=shot.stdout)
+
+    return f
+
+def backlight(action):
+    def f(qtile):
+        brightness = float(subprocess.run(['xbacklight', '-get'], stdout=subprocess.PIPE).stdout)
+        if brightness != 1 or action != 'dec':
+            if (brightness > 49 and action == 'dec') \
+                    or (brightness > 39 and action == 'inc'):
+                subprocess.run(['xbacklight',f'-{action}','10'])
+                brightness = float(subprocess.run(['xbacklight', '-get'],stdout=subprocess.PIPE).stdout)
+                subprocess.run(['tvolnoti-show','-b',f'{str(int(brightness))}'])
+            else:
+                subprocess.run(['xbacklight',f'-{action}','1'])
+                brightness = float(subprocess.run(['xbacklight', '-get'],stdout=subprocess.PIPE).stdout)
+                subprocess.run(['tvolnoti-show','-b',f'{str(int(brightness))}'])
+        subprocess.run(['exit'])
+    return f
+
+
 
 keys = [
     # Switch between windows
@@ -87,6 +126,14 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
+
+    # Screen
+    Key([], 'XF86MonBrightnessUp', lazy.function(backlight('inc'))),
+    Key([], 'XF86MonBrightnessDown', lazy.function(backlight('dec'))),
+
+    # Screenshot
+    Key([], 'Print', lazy.function(screenshot())),
+
 ]
 
 groups = [Group("1", label=""), Group("2", label=""), Group("3",label = ""), Group("4",label = "")]
