@@ -75,10 +75,38 @@ def backlight(action):
                 subprocess.run(['xbacklight',f'-{action}','1'])
                 brightness = float(subprocess.run(['xbacklight', '-get'],stdout=subprocess.PIPE).stdout)
                 subprocess.run(['tvolnoti-show','-b',f'{str(int(brightness))}'])
-        subprocess.run(['exit'])
+        #subprocess.run(['exit'])
     return f
 
+def volumechange(action):
+    def f(qtile):
+        mute = str(subprocess.run(['pamixer', '--get-mute'], stdout=subprocess.PIPE).stdout)[:-1]
+        if "true" in mute:
+            subprocess.run(['tvolnoti-show', '-m'])
+        else:
+            volume = int(str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3])
+            if volume != 0 or action != 'd':
+                if (volume > 49 and action == 'i') \
+                        or (volume > 39 and action == 'd'):
+                    subprocess.run(['pamixer',f'-{action}','10'])
+                    volume = str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3]
+                else:
+                    subprocess.run(['pamixer',f'-{action}','1'])
+                    volume = str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3]
 
+            subprocess.run(['tvolnoti-show',f'{volume}'])
+    return f
+
+def volumetoogle():
+    def f(qtile):
+        subprocess.run(['pamixer','-t'])
+        mute = str(subprocess.run(['pamixer', '--get-mute'], stdout=subprocess.PIPE).stdout)[:-1]
+        if "true" in mute:
+            subprocess.run(['tvolnoti-show', '-m'])
+        else:
+            volume = int(str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3])
+            subprocess.run(['tvolnoti-show',f'{volume}'])
+    return f
 
 keys = [
     # Switch between windows
@@ -130,6 +158,11 @@ keys = [
     # Screen
     Key([], 'XF86MonBrightnessUp', lazy.function(backlight('inc'))),
     Key([], 'XF86MonBrightnessDown', lazy.function(backlight('dec'))),
+    
+    # Volume
+    Key([], 'XF86AudioRaiseVolume', lazy.function(volumechange('i'))),
+    Key([], 'XF86AudioLowerVolume', lazy.function(volumechange('d'))),
+    Key([], 'XF86AudioMute', lazy.function(volumetoogle())),
 
     # Screenshot
     Key([], 'Print', lazy.function(screenshot())),
