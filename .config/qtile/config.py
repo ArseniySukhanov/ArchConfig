@@ -62,22 +62,6 @@ def screenshot(save=True, copy=False):
 
     return f
 
-def backlight(action):
-    def f(qtile):
-        brightness = float(subprocess.run(['xbacklight', '-get'], stdout=subprocess.PIPE).stdout)
-        if brightness != 1 or action != 'dec':
-            if (brightness > 49 and action == 'dec') \
-                    or (brightness > 39 and action == 'inc'):
-                subprocess.run(['xbacklight',f'-{action}','10'])
-                brightness = float(subprocess.run(['xbacklight', '-get'],stdout=subprocess.PIPE).stdout)
-                subprocess.run(['tvolnoti-show','-b',f'{str(int(brightness))}'])
-            else:
-                subprocess.run(['xbacklight',f'-{action}','1'])
-                brightness = float(subprocess.run(['xbacklight', '-get'],stdout=subprocess.PIPE).stdout)
-                subprocess.run(['tvolnoti-show','-b',f'{str(int(brightness))}'])
-        #subprocess.run(['exit'])
-    return f
-
 def volumechange(action):
     def f(qtile):
         mute = str(subprocess.run(['pamixer', '--get-mute'], stdout=subprocess.PIPE).stdout)[:-1]
@@ -155,10 +139,6 @@ keys = [
     Key([mod], "r", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
 
-    # Screen
-    Key([], 'XF86MonBrightnessUp', lazy.function(backlight('inc'))),
-    Key([], 'XF86MonBrightnessDown', lazy.function(backlight('dec'))),
-    
     # Volume
     Key([], 'XF86AudioRaiseVolume', lazy.function(volumechange('i'))),
     Key([], 'XF86AudioLowerVolume', lazy.function(volumechange('d'))),
@@ -232,6 +212,7 @@ screens = [
                                  text_closed='ﰰ ',
                                  text_open='ﰴ '
                                  ),
+                widget.BatteryIcon(),
                 widget.Clock(format='%I:%M %p'),
                 widget.QuickExit(default_text = "襤",countdown_format = '{}', fontsize = 26, padding = 6),
             ],
