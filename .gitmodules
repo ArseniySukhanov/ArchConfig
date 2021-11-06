@@ -1,6 +1,18 @@
-[submodule ".zgenom"]
-	path = .zgenom
-	url = https://github.com/jandamm/zgenom
 [submodule ".config/vifm/vifm_devicons"]
 	path = .config/vifm/vifm_devicons
 	url = https://github.com/cirala/vifm_devicons
+[submodule ".config/zsh/zplugins/zsh-autosuggestions"]
+	path = .config/zsh/zplugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule ".config/zsh/zplugins/zsh-syntax-highlighting"]
+	path = .config/zsh/zplugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".config/zsh/zplugins/zsh-vi-mode"]
+	path = .config/zsh/zplugins/zsh-vi-mode
+	url = https://github.com/jeffreytse/zsh-vi-mode.git
+[submodule ".config/zsh/zplugins/zsh-colored-man-pages"]
+	path = .config/zsh/zplugins/zsh-colored-man-pages
+	url = https://github.com/ael-code/zsh-colored-man-pages.git
+[submodule ".config/zsh/zplugins/spaceship-prompt"]
+	path = .config/zsh/zplugins/spaceship-prompt
+	url = https://github.com/spaceship-prompt/spaceship-prompt.git

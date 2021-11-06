@@ -4,6 +4,9 @@
 !.config/*/
 # Terminal
 !.config/kitty/**
+# Zsh
+!.config/zsh/**
+.config/zsh/.histfile
 # Terminal Utils
 !.config/nvim/*
 !.config/vifm/*
