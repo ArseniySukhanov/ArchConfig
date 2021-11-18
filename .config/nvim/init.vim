@@ -17,7 +17,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 call plug#end()
-
+ 
 
 filetype plugin on
 
@@ -41,13 +41,17 @@ set termguicolors
 "---Completion----------------------------------------------------
 set cot=menuone,noinsert,noselect
 
-:lua << EOF
-  local lsp = require('lspconfig')
-  local coq = require('coq')
+let g:coq_settings = {'auto_start': v:true, 'display.preview.border': [["", "NormalFloat"],["", "NormalFloat"],["", "NormalFloat"],[" ", "NormalFloat"],["", "NormalFloat"],["", "NormalFloat"],["", "NormalFloat"],[" ", "NormalFloat"]]}
+lua << EOF
+local nvim_lsp = require('lspconfig')
+local coq = require('coq')
 
-  lsp.tsserver.setup{}
-  lsp.tsserver.setup(coq.lsp_ensure_capabilities{})
-  vim.cmd('COQnow -s')
+local servers = {'pylsp','tsserver','vimls'}
+
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup{}
+  nvim_lsp[lsp].setup(coq.lsp_ensure_capabilities{})
+end
 EOF
   
 "---Fern settings--------------------------------------------------
