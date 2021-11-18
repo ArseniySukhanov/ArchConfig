@@ -16,3 +16,6 @@
 [submodule ".config/zsh/zplugins/spaceship-prompt"]
 	path = .config/zsh/zplugins/spaceship-prompt
 	url = https://github.com/spaceship-prompt/spaceship-prompt.git
+[submodule ".config/qtile/widgets"]
+	path = .config/qtile/widgets
+	url = https://github.com/ArseniySukhanov/qtile-widgets

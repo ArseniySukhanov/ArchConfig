@@ -34,17 +34,23 @@ from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from widgets import batteryNerdIcon, batterytest
+
 
 @hook.subscribe.startup
 def autostart():
     home = os.path.expanduser('~')
     subprocess.Popen([home + '/.config/qtile/autostart.sh'])
 
+
 BROWSER = 'firefox'
 
 
 mod = "mod4"
 terminal = guess_terminal()
+
+# Widgets
+
 
 # Screenshot
 def screenshot(save=True, copy=False):
@@ -58,39 +64,49 @@ def screenshot(save=True, copy=False):
                 sc.write(shot.stdout)
 
         if copy:
-            subprocess.run(['xclip', '-selection', 'clipboard', '-t', 'image/png'], input=shot.stdout)
+            subprocess.run(['xclip', '-selection',
+                            'clipboard', '-t', 'image/png'], input=shot.stdout)
 
     return f
+
 
 def volumechange(action):
     def f(qtile):
-        mute = str(subprocess.run(['pamixer', '--get-mute'], stdout=subprocess.PIPE).stdout)[:-1]
+        mute = str(subprocess.run(['pamixer', '--get-mute'],
+                                  stdout=subprocess.PIPE).stdout)[:-1]
         if "true" in mute:
             subprocess.run(['tvolnoti-show', '-m'])
         else:
-            volume = int(str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3])
+            volume = int(
+                str(subprocess.run(['pamixer', '--get-volume'],
+                                   stdout=subprocess.PIPE).stdout)[2:-3])
             if volume != 0 or action != 'd':
                 if (volume > 49 and action == 'i') \
                         or (volume > 39 and action == 'd'):
-                    subprocess.run(['pamixer',f'-{action}','10'])
+                    subprocess.run(['pamixer', f'-{action}', '10'])
                     volume = str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3]
                 else:
-                    subprocess.run(['pamixer',f'-{action}','1'])
+                    subprocess.run(['pamixer', f'-{action}', '1'])
                     volume = str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3]
 
-            subprocess.run(['tvolnoti-show',f'{volume}'])
+            subprocess.run(['tvolnoti-show', f'{volume}'])
     return f
+
 
 def volumetoogle():
     def f(qtile):
-        subprocess.run(['pamixer','-t'])
-        mute = str(subprocess.run(['pamixer', '--get-mute'], stdout=subprocess.PIPE).stdout)[:-1]
+        subprocess.run(['pamixer', '-t'])
+        mute = str(subprocess.run(['pamixer', '--get-mute'],
+                                  stdout=subprocess.PIPE).stdout)[:-1]
         if "true" in mute:
             subprocess.run(['tvolnoti-show', '-m'])
         else:
-            volume = int(str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3])
-            subprocess.run(['tvolnoti-show',f'{volume}'])
+            volume = int(
+                str(subprocess.run(['pamixer', '--get-volume'],
+                                   stdout=subprocess.PIPE).stdout)[2:-3])
+            subprocess.run(['tvolnoti-show', f'{volume}'])
     return f
+
 
 keys = [
     # Switch between windows
@@ -149,7 +165,8 @@ keys = [
 
 ]
 
-groups = [Group("1", label=""), Group("2", label=""), Group("3",label = ""), Group("4",label = "")]
+groups = [Group("1", label=""), Group("2", label=""), Group("3", label=""),
+          Group("4", label="")]
 
 for i in groups:
     keys.extend([
@@ -157,8 +174,10 @@ for i in groups:
         Key([mod], i.name, lazy.group[i.name].toscreen(),
             desc="Switch to group {}".format(i.name)),
 
-        # mod1 + shift + letter of group = switch to & move focused window to group
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
+        # mod1 + shift + letter of group = switch to
+        # & move focused window to group
+        Key([mod, "shift"], i.name,
+            lazy.window.togroup(i.name, switch_group=True),
             desc="Switch to & move focused window to group {}".format(i.name)),
         # Or, use below if you prefer not to switch to that group.
         # # mod1 + shift + letter of group = move focused window to group
@@ -167,16 +186,16 @@ for i in groups:
     ])
 
 layouts = [
-    layout.MonadTall(margin = 5,border_width = 0),
-    layout.Columns(margin = 5,border_width = 0),
-    layout.Max(margin = 5,border_width = 0),
+    layout.MonadTall(margin=5, border_width=0),
+    layout.Columns(margin=5, border_width=0),
+    layout.Max(margin=5, border_width=0),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
     # layout.MonadWide(),
     # layout.RatioTile(),
-    layout.Tile(margin = 5,border_width = 0),
+    layout.Tile(margin=5, border_width=0),
     # layout.TreeTab(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
@@ -186,7 +205,7 @@ widget_defaults = dict(
     font='sans',
     fontsize=12,
     padding=3,
-    foreground = "#abb2bf"
+    foreground="#abb2bf"
 )
 extension_defaults = widget_defaults.copy()
 
@@ -194,8 +213,8 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(background = "#282c34",scale = 0.7),
-                widget.GroupBox(margin = 3, spacing = 0,fontsize = 16),
+                widget.CurrentLayoutIcon(background="#282c34", scale=0.7),
+                widget.GroupBox(margin=3, spacing=0, fontsize=16),
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
@@ -205,22 +224,27 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.WidgetBox(widgets=[
-                widget.Systray(),
-                widget.Wlan()
-                ],
+                                          # widget.Systray(),
+                                          widget.Wlan()
+                                         ],
                                  fontsize=20,
                                  text_closed='ﰰ ',
                                  text_open='ﰴ '
                                  ),
-                widget.BatteryIcon(),
+                batteryNerdIcon.batteryNerdIcon(spacing=5,
+                                                fontsize=14,
+                                                font="mono"),
                 widget.Clock(format='%I:%M %p'),
-                widget.QuickExit(default_text = "襤",countdown_format = '{}', fontsize = 26, padding = 6),
+                widget.QuickExit(default_text="襤",
+                                 font="FiraCode Nerd Font",
+                                 countdown_format='{}',
+                                 fontsize=26, padding=6),
             ],
             24,
-            margin = [5, 5, 0, 5],
-            background = "#1f2329"
+            margin=[5, 5, 0, 5],
+            background="#1f2329"
         ),
-        wallpaper = '~/.config/qtile/wallpaper/wallpaper_1.jpg'
+        wallpaper='~/.config/qtile/wallpaper/wallpaper_1.jpg'
     ),
 ]
 

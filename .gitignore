@@ -15,6 +15,7 @@
 !.config/htop/*
 # Window manager
 !.config/qtile/*
+.config/qtile/__pycache__
 !.config/picom/*
 # GTK
 !.config/gtk-2.0/*
