@@ -10,6 +10,7 @@
 # Terminal Utils
 !.config/nvim/*
 !.config/vifm/*
+.config/vifm/vifminfo.json
 !.config/neofetch/*
 !.config/htop/*
 # Window manager
