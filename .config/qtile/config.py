@@ -34,7 +34,7 @@ from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from widgets import batteryNerdIcon, batterytest
+from widgets import batteryNerdIcon, internet
 
 
 @hook.subscribe.startup
@@ -84,10 +84,12 @@ def volumechange(action):
                 if (volume > 49 and action == 'i') \
                         or (volume > 39 and action == 'd'):
                     subprocess.run(['pamixer', f'-{action}', '10'])
-                    volume = str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3]
+                    volume = str(subprocess.run(['pamixer', '--get-volume'],
+                                                stdout=subprocess.PIPE).stdout)[2:-3]
                 else:
                     subprocess.run(['pamixer', f'-{action}', '1'])
-                    volume = str(subprocess.run(['pamixer', '--get-volume'],stdout=subprocess.PIPE).stdout)[2:-3]
+                    volume = str(subprocess.run(['pamixer', '--get-volume'],
+                                                stdout=subprocess.PIPE).stdout)[2:-3]
 
             subprocess.run(['tvolnoti-show', f'{volume}'])
     return f
@@ -224,13 +226,13 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.WidgetBox(widgets=[
-                                          # widget.Systray(),
-                                          widget.Wlan()
+                                          widget.Systray(),
                                          ],
                                  fontsize=20,
                                  text_closed='ﰰ ',
                                  text_open='ﰴ '
                                  ),
+                internet.Internet(),
                 batteryNerdIcon.batteryNerdIcon(spacing=5,
                                                 fontsize=14,
                                                 font="mono"),
