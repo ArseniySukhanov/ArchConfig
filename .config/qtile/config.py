@@ -34,7 +34,7 @@ from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from widgets import batteryNerdIcon, internet
+from widgets import batteryNerdIcon, internet, volume
 
 
 @hook.subscribe.startup
@@ -77,21 +77,21 @@ def volumechange(action):
         if "true" in mute:
             subprocess.run(['tvolnoti-show', '-m'])
         else:
-            volume = int(
+            vol = int(
                 str(subprocess.run(['pamixer', '--get-volume'],
                                    stdout=subprocess.PIPE).stdout)[2:-3])
-            if volume != 0 or action != 'd':
-                if (volume > 49 and action == 'i') \
-                        or (volume > 39 and action == 'd'):
+            if vol != 0 or action != 'd':
+                if (vol > 49 and action == 'i') \
+                        or (vol > 39 and action == 'd'):
                     subprocess.run(['pamixer', f'-{action}', '10'])
-                    volume = str(subprocess.run(['pamixer', '--get-volume'],
+                    vol = str(subprocess.run(['pamixer', '--get-volume'],
                                                 stdout=subprocess.PIPE).stdout)[2:-3]
                 else:
                     subprocess.run(['pamixer', f'-{action}', '1'])
-                    volume = str(subprocess.run(['pamixer', '--get-volume'],
+                    vol = str(subprocess.run(['pamixer', '--get-volume'],
                                                 stdout=subprocess.PIPE).stdout)[2:-3]
 
-            subprocess.run(['tvolnoti-show', f'{volume}'])
+            subprocess.run(['tvolnoti-show', f'{vol}'])
     return f
 
 
@@ -232,6 +232,7 @@ screens = [
                                  text_closed='ﰰ ',
                                  text_open='ﰴ '
                                  ),
+                volume.Volume(margin=4),
                 internet.Internet(),
                 batteryNerdIcon.batteryNerdIcon(spacing=5,
                                                 fontsize=14,
