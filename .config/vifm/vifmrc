@@ -173,7 +173,10 @@ command! reload :write | restart full
 
 " Pdf
 filextype {*.pdf},<application/pdf> zathura %c %i &, apvlv %c, xpdf %c
-fileviewer {*.pdf},<application/pdf> pdftotext -nopgbrk %c -
+fileviewer {*.pdf},<application/pdf> 
+        \ tput cup %py %px > /dev/tty && pdftoppm -jpeg -singlefile %c /tmp/tempfile > /dev/null && kitty +icat --transfer-mode=file --place=%pwx%ph@%pxx%py /tmp/tempfile.jpg %N
+         \ %pc
+         \ kitty icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear %N
 
 " PostScript
 filextype {*.ps,*.eps,*.ps.gz},<application/postscript>
@@ -218,13 +221,9 @@ fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
 
 " Web
 filextype {*.html,*.htm},<text/html>
-        \ {Open with dwb}
-        \ dwb %f %i &,
         \ {Open with firefox}
-        \ firefox %f &,
-        \ {Open with uzbl}
-        \ uzbl-browser %f %i &,
-filetype {*.html,*.htm},<text/html> links, lynx
+        \ firefox %f 
+filetype {*.html,*.htm},<text/html> w3m 
 
 " Object
 filetype {*.o},<application/x-object> nm %f | less
@@ -241,8 +240,10 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
         \ gpicview %c,
         \ {View in shotwell}
         \ shotwell,
-fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
-         \ identify %f
+fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.svg},<image/*>
+         \ kitty +icat --transfer-mode=file --place=%pwx%ph@%pxx%py %c %N
+         \ %pc
+         \ kitty icat --transfer-mode=file --place=%pwx%ph@%pxx%py --clear %pd %N
 
 " OpenRaster
 filextype *.ora

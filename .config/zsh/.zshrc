@@ -21,7 +21,7 @@ alias rm="rm -i"
 alias mv="mv -i"
 alias la="ls -A"
 ## Kitty terminal alias
-alias icat="kitty +kitten icat"
+## alias icat="kitty +kitten icat"
 
 # Zsh prompt theme
 SPACESHIP_CHAR_SYMBOL=' '
