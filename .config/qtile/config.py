@@ -43,6 +43,12 @@ def autostart():
     subprocess.Popen([home + '/.config/qtile/autostart.sh'])
 
 
+@hook.subscribe.startup_once
+def firststart():
+    home = os.path.expanduser('~')
+    subprocess.Popen([home + '/.config/qtile/firststart.sh'])
+
+
 BROWSER = 'firefox'
 
 
