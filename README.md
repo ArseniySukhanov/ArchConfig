@@ -4,8 +4,8 @@ My arch linux configuration files
 
 ## Screenshots
 
-![screenshot1](https://github.com/ArseniySukhanov/ArchConfig/blob/master/screenshots/screenshot_1.png)
-![screenshot2](https://github.com/ArseniySukhanov/ArchConfig/blob/master/screenshots/screenshot_2.png)
+![screenshot1](screenshots/screenshot_1.png)
+![screenshot2](screenshots/screenshot_2.png)
 
 ## Zsh Configuration
 
