@@ -12,6 +12,7 @@ Plug 'lambdalisue/fern-git-status.vim'
 Plug 'lambdalisue/fern-mapping-git.vim'
 Plug 'yuki-yano/fern-preview.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'iamcco/markdown-preview.nvim',{ 'do': 'cd app && yarn install' }
 " Autocompletion
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
@@ -37,7 +38,11 @@ let g:lightline = {
 			\ }
 
 set termguicolors
- 
+
+"---Markdown preview---
+let g:mkdp_auto_start = 1
+let g:mkdp_browser = 'firefox'
+
 "---Completion----------------------------------------------------
 set cot=menuone,noinsert,noselect
 
@@ -46,7 +51,7 @@ lua << EOF
 local nvim_lsp = require('lspconfig')
 local coq = require('coq')
 
-local servers = {'pylsp','tsserver','vimls'}
+local servers = {'pylsp','tsserver','vimls', 'bashls'}
 
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup{}
