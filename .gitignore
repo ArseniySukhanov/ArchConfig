@@ -13,6 +13,8 @@
 .config/vifm/vifminfo.json
 !.config/neofetch/*
 !.config/htop/*
+# Pdf/Djvu Reader
+!.config/zathura/*
 # Window manager
 !.config/qtile/*
 .config/qtile/__pycache__
