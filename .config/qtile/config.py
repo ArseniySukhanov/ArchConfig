@@ -153,6 +153,7 @@ keys = [
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "f", lazy.spawn(BROWSER), desc="Launch browser"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -160,8 +161,8 @@ keys = [
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("rofi -show drun"),
+        desc="Spawn rofi"),
 
     # Volume
     Key([], 'XF86AudioRaiseVolume', lazy.function(volumechange('i'))),
@@ -223,14 +224,15 @@ screens = [
             [
                 widget.CurrentLayoutIcon(background="#282c34", scale=0.7),
                 widget.GroupBox(margin=3, spacing=0, fontsize=16),
-                widget.Prompt(),
-                widget.WindowName(),
                 widget.Chord(
                     chords_colors={
                         'launch': ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
+                widget.Spacer(),
+                widget.Clock(format='%I:%M %p'),
+                widget.Spacer(),
                 widget.WidgetBox(widgets=[
                                           widget.Systray(),
                                          ],
@@ -243,7 +245,6 @@ screens = [
                 batteryNerdIcon.batteryNerdIcon(spacing=5,
                                                 fontsize=14,
                                                 font="mono"),
-                widget.Clock(format='%I:%M %p'),
                 widget.QuickExit(default_text="襤",
                                  font="FiraCode Nerd Font",
                                  countdown_format='{}',

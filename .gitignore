@@ -13,6 +13,8 @@
 .config/vifm/vifminfo.json
 !.config/neofetch/*
 !.config/htop/*
+# Rofi
+!.config/rofi/*
 # Pdf/Djvu Reader
 !.config/zathura/*
 # Window manager
