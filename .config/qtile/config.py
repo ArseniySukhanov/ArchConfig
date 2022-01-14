@@ -116,6 +116,12 @@ def volumetoogle():
     return f
 
 
+def open_pavu():
+    from libqtile import qtile
+
+    qtile.cmd_spawn('pavucontrol')
+
+
 keys = [
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -154,7 +160,6 @@ keys = [
         desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "f", lazy.spawn(BROWSER), desc="Launch browser"),
-
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
@@ -231,7 +236,8 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.Spacer(),
-                widget.Clock(format='%I:%M %p'),
+                widget.Clock(format='%I:%M %p'
+                             ),
                 widget.Spacer(),
                 widget.WidgetBox(widgets=[
                                           widget.Systray(),
@@ -240,7 +246,9 @@ screens = [
                                  text_closed='ﰰ ',
                                  text_open='ﰴ '
                                  ),
-                volume.Volume(margin=4),
+                volume.Volume(margin=4,
+                              mouse_callbacks={'Button1': open_pavu}
+                              ),
                 internet.Internet(),
                 batteryNerdIcon.batteryNerdIcon(spacing=5,
                                                 fontsize=14,
@@ -280,6 +288,7 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='makebranch'),  # gitk
     Match(wm_class='maketag'),  # gitk
     Match(wm_class='ssh-askpass'),  # ssh-askpass
+    Match(wm_class='pavucontrol'),  # sound control panel
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry'),  # GPG key password entry
 ])
