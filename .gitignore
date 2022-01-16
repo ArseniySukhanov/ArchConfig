@@ -9,8 +9,6 @@
 .config/zsh/.histfile
 # Terminal Utils
 !.config/nvim/*
-!.config/vifm/*
-.config/vifm/vifminfo.json
 !.config/neofetch/*
 !.config/htop/*
 # Rofi
@@ -31,3 +29,5 @@
 # User Directories
 !.config/user-dirs.dirs
 !.config/user-dirs.locale
+# File Manager
+!.config/pcmanfm/*
