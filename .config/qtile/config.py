@@ -34,7 +34,7 @@ from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from widgets import batteryNerdIcon, internet, volume
+from widgets import batteryNerdIcon, internet, volume, keyboardLayout
 
 
 @hook.subscribe.startup
@@ -259,12 +259,18 @@ screens = [
                                          ],
                                  fontsize=20,
                                  text_closed='ﰰ ',
-                                 text_open='ﰴ '
+                                 text_open='ﰴ ',
                                  ),
                 volume.Volume(margin=4,
                               mouse_callbacks={'Button1': open_pavu}
                               ),
                 internet.Internet(),
+                keyboardLayout.KeyboardLayout(
+                    fontsize=13,
+                    padding=1,
+                    update_interval=1,
+                    font="FiraCode Nerd Font"
+                ),
                 batteryNerdIcon.batteryNerdIcon(spacing=5,
                                                 fontsize=14,
                                                 font="mono"),
