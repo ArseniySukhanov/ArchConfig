@@ -15,6 +15,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'iamcco/markdown-preview.nvim',{ 'do': 'cd app && yarn install' }
 " Autocompletion
 Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 call plug#end()
@@ -48,14 +49,22 @@ set cot=menuone,noinsert,noselect
 
 let g:coq_settings = {'auto_start': v:true, 'display.preview.border': [["", "NormalFloat"],["", "NormalFloat"],["", "NormalFloat"],[" ", "NormalFloat"],["", "NormalFloat"],["", "NormalFloat"],["", "NormalFloat"],[" ", "NormalFloat"]]}
 lua << EOF
+local lsp_installer_servers = require('nvim-lsp-installer.servers')
 local nvim_lsp = require('lspconfig')
 local coq = require('coq')
 
 local servers = {'pylsp','tsserver','vimls', 'bashls'}
 
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup{}
-  nvim_lsp[lsp].setup(coq.lsp_ensure_capabilities{})
+for _, server_name in pairs(servers) do
+  local server_available, server = lsp_installer_servers.get_server(server_name)
+  if server_available then
+      server:on_ready(function ()
+      server:setup(coq.lsp_ensure_capabilities{})
+    end)
+    if not server:is_installed() then
+      server:install()
+    end
+  end
 end
 EOF
   
