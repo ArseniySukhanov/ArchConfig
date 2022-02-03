@@ -9,6 +9,10 @@ My arch linux configuration files
 
 ## Zsh Configuration
 
+## Fonts
+
+Instruction how to add fonts: [instruction](https://jichu4n.com/posts/how-to-set-default-fonts-and-font-aliases-on-linux)
+
 ## Future plans
 
 There also would be instructions for install and some .sh executables in order to make process faster and easier
